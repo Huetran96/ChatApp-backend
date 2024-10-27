@@ -16,7 +16,7 @@ namespace chat_server.Repositories
         // Phương thức để chặn một người dùng dựa trên requestedId và acceptedId
         Task<Friendship> BlockUser(Friendship friendship,bool isNew);
 
-        Task RemoveFriend(Friendship friendship); // Xóa mối quan hệ kết bạn
+        Task<Friendship> RemoveFriend(Friendship friendship, bool isNew); // Xóa mối quan hệ kết bạn
 
         // Phương thức để lấy danh sách người dùng bị chặn dựa trên userId
         Task<List<Friendship>> GetBlockedUsers(string userId);
@@ -27,6 +27,8 @@ namespace chat_server.Repositories
 
         Task<Friendship> GetFriendship(string requestedId, string acceptedId); // Lấy yêu cầu kết bạn dựa vào ID
         Task UpdateFriendship(Friendship friendship); // Cập nhật yêu cầu kết bạn
+
+        Task<List<User>> SearchUsersByNameOrPhone(string searchTerm);
     }
 
 }

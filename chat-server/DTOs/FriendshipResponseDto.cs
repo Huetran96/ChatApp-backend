@@ -9,5 +9,6 @@
         public DateTime CreatedAt { get; set; } // Thời gian tạo yêu cầu
         public DateTime UpdatedAt { get; set; } // Thời gian cập nhật yêu cầu
         public string PhoneNumber { get; set; } // Số điện thoại 
+        public string Name { get; set; } // Tên 
     }
 }

@@ -19,7 +19,7 @@ namespace chat_server.Controllers
         }
 
         // Thêm yêu cầu kết bạn (POST)
-        [Authorize]
+        //[Authorize]
         [HttpPost("add-friend")]
         public async Task<IActionResult> AddFriendByPhone([FromBody] FriendshipCreateDto dto)
         {
@@ -55,7 +55,7 @@ namespace chat_server.Controllers
         }
 
         // Lấy danh sách bạn bè của người dùng (GET)
-        [Authorize]
+        //[Authorize]
         [HttpGet("friends")]
         public async Task<IActionResult> GetFriends()
         {
@@ -78,7 +78,7 @@ namespace chat_server.Controllers
         }
 
         // Chấp nhận yêu cầu kết bạn (PUT)
-        [Authorize]
+        //[Authorize]
         [HttpPut("accept-friend")]
         public async Task<IActionResult> AcceptFriend([FromQuery] string senderPhoneNumber)
         {
@@ -106,7 +106,7 @@ namespace chat_server.Controllers
         }
 
         // Chặn người dùng (POST)
-        [Authorize]
+        //[Authorize]
         [HttpPost("block-user")]
         public async Task<IActionResult> BlockUser([FromQuery] string blockedUserPhoneNumber)
         {
@@ -133,8 +133,8 @@ namespace chat_server.Controllers
         }
 
         // Xóa kết bạn (DELETE)
-        [Authorize]
-        [HttpDelete("remove-friend")]
+        //[Authorize]
+        [HttpPost("remove-friend")]
         public async Task<IActionResult> RemoveFriend([FromQuery] string friendPhoneNumber)
         {
             try
@@ -146,32 +146,18 @@ namespace chat_server.Controllers
                     return Unauthorized("Không có ID người dùng trong token.");
                 }
                 var userId = userIdClaim.Value;
-                // Kiểm tra nếu userId null (người dùng chưa đăng nhập)
-                if (string.IsNullOrEmpty(userId))
-                {
-                    return Unauthorized("Người dùng không được xác thực."); // Trả về HTTP 401
-                }
-
-                // Gọi service để xóa bạn bè dựa trên số điện thoại của người bị xóa
-                await _friendshipService.RemoveFriendByPhone(userId, friendPhoneNumber);
-
-                return NoContent(); // Trả về HTTP 204 sau khi xóa kết bạn
-            }
-            catch (KeyNotFoundException ex)
-            {
-                // Trả về HTTP 404 nếu không tìm thấy người dùng hoặc quan hệ kết bạn
-                return NotFound(ex.Message);
+                var result = await _friendshipService.RemoveFriendByPhone(userId, friendPhoneNumber);
+                return Ok(result); // Trả về HTTP 200 với danh sách người bị chặn
             }
             catch (Exception ex)
             {
-                // Trả về HTTP 500 nếu có lỗi khác
-                return StatusCode(500, "Xóa kết bạn thất bại: " + ex.Message);
+                return StatusCode(500, ex.Message); // Trả về HTTP 500 nếu có lỗi
             }
         }
 
 
         // Lấy danh sách người dùng bị chặn (GET)
-        [Authorize]
+        //[Authorize]
         [HttpGet("blocked-users")]
         public async Task<IActionResult> GetBlockedUsers()
         {
@@ -194,7 +180,7 @@ namespace chat_server.Controllers
         }
 
         // Lấy danh sách yêu cầu kết bạn chưa được chấp nhận (GET)
-        [Authorize]
+        //[Authorize]
         [HttpGet("friend-requests")]
         public async Task<IActionResult> GetFriendRequests()
         {
@@ -216,7 +202,7 @@ namespace chat_server.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("friend-receives")]
         public async Task<IActionResult> GetFriendReceives()
         {
@@ -235,6 +221,29 @@ namespace chat_server.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message); // Trả về HTTP 500 nếu có lỗi
+            }
+        }
+
+        [HttpGet("search-users")]
+        public async Task<IActionResult> SearchUsers([FromQuery] string searchTerm)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(searchTerm))
+                {
+                    return BadRequest("Từ khóa tìm kiếm không được để trống.");
+                }
+
+                // Gọi service để tìm kiếm người dùng theo từ khóa
+                var result = await _friendshipService.SearchUsers(searchTerm);
+
+                // Trả về HTTP 200 với danh sách người dùng phù hợp
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // Trả về HTTP 500 nếu có lỗi
+                return StatusCode(500, ex.Message);
             }
         }
     }

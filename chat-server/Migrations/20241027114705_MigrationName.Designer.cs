@@ -12,8 +12,8 @@ using chat_server.data;
 namespace chat_server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241027112134_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241027114705_MigrationName")]
+    partial class MigrationName
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

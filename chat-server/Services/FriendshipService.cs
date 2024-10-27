@@ -80,6 +80,21 @@ namespace chat_server.Services
                     {
                         throw new Exception("Yêu cầu kết bạn đã tồn tại và đang chờ xử lý.");
                     }
+                    if (existingFriendship.Status == "Deleted")
+                    {
+                        existingFriendship.Status = "Pending";
+                        existingFriendship.UpdatedAt = DateTime.Now;
+                        // Gọi repository để lưu cập nhật lại trạng thái của quan hệ
+                        await _repository.UpdateFriendship(existingFriendship);
+                        return new FriendshipResponseDto
+                        {
+                            RequestedId = existingFriendship.RequestedId,
+                            AcceptedId = existingFriendship.AcceptedId,
+                            Status = existingFriendship.Status,
+                            CreatedAt = existingFriendship.CreateAt,
+                            UpdatedAt = existingFriendship.UpdatedAt
+                        };
+                    }
                 }
 
                 // Tạo một đối tượng Friendship mới
@@ -154,7 +169,8 @@ namespace chat_server.Services
                         Status = friend.Status,              // Trạng thái của yêu cầu
                         CreatedAt = friend.CreateAt,         // Thời gian tạo yêu cầu
                         UpdatedAt = friend.UpdatedAt,        // Thời gian cập nhật yêu cầu
-                        PhoneNumber = friendUser.PhoneNumber // Số điện thoại của bạn bè
+                        PhoneNumber = friendUser.PhoneNumber, // Số điện thoại của bạn bè
+                        Name = friendUser.UserName             // Tên
                     };
 
                     friendsDto.Add(dto);
@@ -290,30 +306,78 @@ namespace chat_server.Services
         }
 
         // Xóa hoặc hủy kết bạn
-        public async Task RemoveFriendByPhone(string requestedId, string friendPhoneNumber)
+        public async Task<FriendshipResponseDto> RemoveFriendByPhone(string userId, string friendPhoneNumber)
         {
             try
             {
-                // Tìm người dùng (bạn bè) dựa trên số điện thoại
-                var acceptedUser = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == friendPhoneNumber);
-                if (acceptedUser == null)
+                // Check if userId is valid (blocker)
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new Exception("UserId không được phép rỗng hoặc null.");
+                }
+
+                // Find the user to be blocked by their phone number
+                var deletedUser = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == friendPhoneNumber);
+                if (deletedUser == null)
                 {
                     throw new Exception("Không tìm thấy người dùng với số điện thoại này.");
                 }
 
-                // Tìm mối quan hệ kết bạn trong cơ sở dữ liệu
-                var friendship = await _repository.GetFriendship(requestedId, acceptedUser.Id);
-                if (friendship == null)
+                // Check if the user is trying to block themselves
+                if (userId == deletedUser.Id)
                 {
-                    throw new Exception("Không tìm thấy mối quan hệ kết bạn.");
+                    throw new Exception("Bạn không thể tự xóa chính mình.");
                 }
 
-                // Xóa mối quan hệ kết bạn
-                await _repository.RemoveFriend(friendship);
+                // Check if the friendship relationship already exists
+                var existingFriendship = await _repository.GetFriendship(userId, deletedUser.Id);
+                bool isNew = false;
+                Friendship friendship;
+
+                if (existingFriendship == null)
+                {
+                    // If no existing relationship, create a new "Blocked" relationship
+                    friendship = new Friendship
+                    {
+                        RequestedId = userId,          // The user who is blocking
+                        AcceptedId = deletedUser.Id,   // The user who is being blocked
+                        Status = "Deleted",            // Set the status to "Deleted"
+                        CreateAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
+                    };
+
+                    isNew = true; // Mark as a new relationship
+                }
+                else
+                {
+                    // If the relationship exists, update its status to "Deleted"
+                    if (existingFriendship.Status == "Deleted")
+                    {
+                        throw new Exception("Người dùng này đã bị chặn.");
+                    }
+
+                    friendship = existingFriendship;
+                    friendship.Status = "Deleted";
+                    friendship.UpdatedAt = DateTime.Now;
+                }
+
+                // Call repository to save the new or updated relationship
+                await _repository.RemoveFriend(friendship, isNew);
+
+                // Return the friendship response DTO
+                return new FriendshipResponseDto
+                {
+                    RequestedId = friendship.RequestedId,
+                    AcceptedId = friendship.AcceptedId,
+                    Status = friendship.Status,
+                    CreatedAt = friendship.CreateAt,
+                    UpdatedAt = friendship.UpdatedAt
+                };
             }
             catch (Exception ex)
             {
-                throw new Exception("Không thể xóa kết bạn.", ex);
+                // Handle exception and return a meaningful error message
+                throw new Exception($"Chặn người dùng thất bại: {ex.Message}", ex);
             }
         }
 
@@ -346,7 +410,8 @@ namespace chat_server.Services
                         Status = b.Status,            // Trạng thái của yêu cầu
                         CreatedAt = b.CreateAt,       // Thời gian tạo yêu cầu
                         UpdatedAt = b.UpdatedAt,      // Thời gian cập nhật yêu cầu
-                        PhoneNumber = blockedUser.PhoneNumber // Số điện thoại của người bị chặn
+                        PhoneNumber = blockedUser.PhoneNumber, // Số điện thoại của người bị chặn
+                        Name =blockedUser.UserName //Tên
                     };
 
                     blockedDto.Add(dto);
@@ -376,9 +441,9 @@ namespace chat_server.Services
                 foreach (var request in requests)
                 {
                     // Lấy thông tin người gửi yêu cầu dựa trên RequestedId
-                    var senderUser = await _userManager.FindByIdAsync(request.RequestedId);
+                    var recipientUser = await _userManager.FindByIdAsync(request.AcceptedId);
 
-                    if (senderUser == null)
+                    if (recipientUser == null)
                     {
                         throw new Exception("Không tìm thấy thông tin người gửi yêu cầu.");
                     }
@@ -391,7 +456,7 @@ namespace chat_server.Services
                         Status = request.Status,            // Trạng thái của yêu cầu
                         CreatedAt = request.CreateAt,       // Thời gian tạo yêu cầu
                         UpdatedAt = request.UpdatedAt,      // Thời gian cập nhật yêu cầu
-                        PhoneNumber = senderUser.PhoneNumber // Số điện thoại của người gửi yêu cầu
+                        PhoneNumber = recipientUser.PhoneNumber // Số điện thoại của người gửi yêu cầu
                     };
 
                     requestsDto.Add(dto);
@@ -448,6 +513,22 @@ namespace chat_server.Services
                 // Xử lý ngoại lệ nếu không lấy được danh sách yêu cầu kết bạn
                 throw new Exception("Failed to retrieve friend requests", ex);
             }
+        }
+
+        public async Task<List<FriendshipResponseDto>> SearchUsers(string searchTerm)
+        {
+            // Tìm kiếm người dùng theo tên hoặc số điện thoại
+            var users = await _repository.SearchUsersByNameOrPhone(searchTerm);
+
+            // Chuyển đổi kết quả sang danh sách DTO để trả về
+            var userDtos = users.Select(user => new FriendshipResponseDto
+            {
+                
+                Name = user.UserName,
+                PhoneNumber = user.PhoneNumber
+            }).ToList();
+
+            return userDtos;
         }
     }
 

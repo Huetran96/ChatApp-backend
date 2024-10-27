@@ -28,7 +28,9 @@ namespace chat_server.Services
         //Phương thức lấy người dùng theo số điện thoại
         Task<User> GetUserByPhoneNumber(string phoneNumber);
 
-        Task RemoveFriendByPhone(string requestedId, string friendPhoneNumber);
+        Task<FriendshipResponseDto> RemoveFriendByPhone(string requestedId, string friendPhoneNumber);
+
+        Task<List<FriendshipResponseDto>> SearchUsers(string searchTerm);
 
     }
 

@@ -1,4 +1,5 @@
 ﻿using chat_server.data;
+using chat_server.DTOs;
 using chat_server.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -107,10 +108,37 @@ namespace chat_server.Repositories
             }
         }
 
-        public async Task RemoveFriend(Friendship friendship)
+        public async Task<Friendship> RemoveFriend(Friendship friendship, bool isNew)
         {
-            _context.Friendships.Remove(friendship); // Xóa mối quan hệ kết bạn
-            await _context.SaveChangesAsync(); // Lưu thay đổi vào cơ sở dữ liệu
+            try
+            {
+
+                if (isNew)
+                {
+                    // Nếu đây là một mối quan hệ mới, thêm nó vào ngữ cảnh
+                    _context.Friendships.Add(friendship);
+                }
+                else
+                {
+                    // Nếu mối quan hệ đã tồn tại, cập nhật nó
+                    _context.Friendships.Update(friendship);
+                }
+
+                // Lưu các thay đổi vào cơ sở dữ liệu
+                await _context.SaveChangesAsync();
+
+                return friendship; // Trả về mối quan hệ đã lưu
+            }
+            catch (DbUpdateException dbEx)
+            {
+
+                throw new Exception("Đã xảy ra lỗi khi lưu các thay đổi. Vui lòng kiểm tra dữ liệu đầu vào hoặc các ràng buộc.", dbEx);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Xóa người dùng thất bại do lỗi không mong muốn.", ex);
+            }
         }
 
 
@@ -118,7 +146,7 @@ namespace chat_server.Repositories
         public async Task<List<Friendship>> GetBlockedUsers(string userId)
         {
             return await _context.Friendships
-                .Where(f => (f.RequestedId == userId || f.AcceptedId == userId) && f.Status == "Blocked") // Lọc danh sách người dùng bị chặn
+                .Where(f => (f.RequestedId == userId ) && f.Status == "Blocked") // Lọc danh sách người dùng bị chặn
                 .ToListAsync(); // Chuyển đổi kết quả thành danh sách
         }
 
@@ -148,6 +176,24 @@ namespace chat_server.Repositories
             _context.Friendships.Update(friendship); // Cập nhật đối tượng Friendship trong DbSet
             await _context.SaveChangesAsync();       // Lưu thay đổi vào cơ sở dữ liệu
         }
+
+        public async Task<List<User>> SearchUsersByNameOrPhone(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return new List<User>(); // Trả về danh sách rỗng nếu searchTerm trống hoặc chỉ có khoảng trắng
+            }
+
+            searchTerm = searchTerm.Trim().ToLower(); // Loại bỏ khoảng trắng và chuyển về chữ thường
+
+            return await _context.Users
+                .Where(user =>
+                    user.UserName.ToLower().Contains(searchTerm) ||
+                    user.PhoneNumber.Contains(searchTerm)) // Case-insensitive tìm kiếm cho UserName
+                .Take(10) // Giới hạn kết quả trả về 10 người dùng đầu tiên
+                .ToListAsync();
+        }
+
     }
 
 
