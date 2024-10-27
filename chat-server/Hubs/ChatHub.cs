@@ -1,4 +1,8 @@
-﻿namespace chat_server.Hubs
+﻿using chat_server.data;
+using chat_server.Models;
+using Microsoft.AspNetCore.SignalR;
+
+namespace chat_server.Hubs
 {
     public class ChatHub(AppDbContext context) : Hub
     {
