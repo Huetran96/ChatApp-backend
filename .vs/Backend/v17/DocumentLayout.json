@@ -7,24 +7,16 @@
       "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\dtos\\responegamedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\dtos\\responegamedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\models\\profile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\models\\profile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\dtos\\tokenreponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\dtos\\tokenreponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\pattern.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\pattern.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\dtos\\updateuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\dtos\\updateuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\helpers\\queryobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\helpers\\queryobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -51,64 +43,39 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\appsettings.json",
-              "RelativeDocumentMoniker": "chat-server\\appsettings.json",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\appsettings.json",
-              "RelativeToolTip": "chat-server\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAABEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-26T13:01:48.212Z",
+              "Title": "ResponeGameDto.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\DTOs\\ResponeGameDto.cs",
+              "RelativeDocumentMoniker": "chat-server\\DTOs\\ResponeGameDto.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\DTOs\\ResponeGameDto.cs",
+              "RelativeToolTip": "chat-server\\DTOs\\ResponeGameDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAA5AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-26T21:33:41.047Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Profile.cs",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Models\\Profile.cs",
-              "RelativeDocumentMoniker": "chat-server\\Models\\Profile.cs",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Models\\Profile.cs",
-              "RelativeToolTip": "chat-server\\Models\\Profile.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAVAAAA",
+              "Title": "TokenReponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\DTOs\\TokenReponseDto.cs",
+              "RelativeDocumentMoniker": "chat-server\\DTOs\\TokenReponseDto.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\DTOs\\TokenReponseDto.cs",
+              "RelativeToolTip": "chat-server\\DTOs\\TokenReponseDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T12:09:58.71Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-26T21:29:54.07Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Pattern.cs",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Pattern.cs",
-              "RelativeDocumentMoniker": "chat-server\\Pattern.cs",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Pattern.cs",
-              "RelativeToolTip": "chat-server\\Pattern.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAABIAAAA",
+              "Title": "QueryObject.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Helpers\\QueryObject.cs",
+              "RelativeDocumentMoniker": "chat-server\\Helpers\\QueryObject.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Helpers\\QueryObject.cs",
+              "RelativeToolTip": "chat-server\\Helpers\\QueryObject.cs",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAxwAYAAAA7AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T11:07:20.28Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Role.cs",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Models\\Role.cs",
-              "RelativeDocumentMoniker": "chat-server\\Models\\Role.cs",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Models\\Role.cs",
-              "RelativeToolTip": "chat-server\\Models\\Role.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAbAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T10:24:44.531Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "UpdateUserDto.cs",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\DTOs\\UpdateUserDto.cs",
-              "RelativeDocumentMoniker": "chat-server\\DTOs\\UpdateUserDto.cs",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\DTOs\\UpdateUserDto.cs",
-              "RelativeToolTip": "chat-server\\DTOs\\UpdateUserDto.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAsAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T20:46:24.894Z"
+              "WhenOpened": "2024-10-26T17:11:50.702Z"
             },
             {
               "$type": "Document",
@@ -118,7 +85,7 @@
               "RelativeDocumentMoniker": "chat-server\\Controllers\\UserController.cs",
               "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Controllers\\UserController.cs",
               "RelativeToolTip": "chat-server\\Controllers\\UserController.cs",
-              "ViewState": "AQIAAD8BAAAAAAAAAAAcwEIBAAAfAAAA",
+              "ViewState": "AQIAAJkBAAAAAAAAAAAuwKUBAAA8AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-16T04:33:34.735Z",
               "EditorCaption": ""

@@ -1,5 +1,6 @@
 ﻿using chat_server.data;
 using chat_server.DTOs;
+using chat_server.Helpers;
 using chat_server.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -88,11 +89,11 @@ namespace chat_server.Controllers
             var isPhoneNumber = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
             if (isEmail != null)
             {
-                return BadRequest("Email is existed");
+                return BadRequest("Email nãy đã được sử dụng, bạn hãy kiểm tra lại");
             }
             if (isPhoneNumber != null)
             {
-                return BadRequest("Phone number is existed");
+                return BadRequest("Số điện thoại này đã được sử dụng,bạn hãy kiểm tra lại");
             }
             var newUser = new User()
             {
@@ -143,10 +144,13 @@ namespace chat_server.Controllers
         {
             string token = "";
             string authoriztion = Request.Headers.Authorization;
-            if (authoriztion.StartsWith("Bearer "))
-            {
-                token = authoriztion.Substring(7).Trim();
+            if(authoriztion != null) {
+                if (authoriztion.StartsWith("Bearer "))
+                {
+                    token = authoriztion.Substring(7).Trim();
+                }
             }
+            
             await _signInManager.SignOutAsync();
 
             TokenLogout tokenLogout = new TokenLogout();
@@ -176,10 +180,35 @@ namespace chat_server.Controllers
         [Authorize(Roles = Role.ADMIN)]
         [HttpGet]
         [Route("user-list")]
-        public async Task<IActionResult> GetAllUser()
+        public async Task<IActionResult> GetAllUser([FromQuery] QueryObject request)
         {
-            var users = _userManager.Users.ToList();
-            return Ok(users);
+            
+            ListUserDto listUserDto = new ListUserDto();
+
+            var allUser = await  _userManager.Users.ToListAsync();
+            if (request.Keyword != null)
+            {
+                allUser = allUser.Where(u => u.UserName.Contains(request.Keyword) || u.Email.Contains(request.Keyword) || u.PhoneNumber.Contains(request.Keyword)).ToList();
+
+            }
+            int mod = allUser.Count % request.PageSize;
+            if (mod == 0)
+            {
+                listUserDto.totalPage = allUser.ToList().Count / request.PageSize;
+            }
+            else
+            {
+                listUserDto.totalPage = (allUser.ToList().Count / request.PageSize) + 1;
+            }
+            if(request.Page > listUserDto.totalPage)
+            {
+                request.Page = listUserDto.totalPage;
+            }
+
+            int skip = (request.Page - 1) * request.PageSize;
+            listUserDto.users = allUser.Skip(skip).Take(request.PageSize).ToList();
+
+            return Ok(listUserDto);
         }
 
 
@@ -390,7 +419,7 @@ namespace chat_server.Controllers
 
             var account = new AccountDto();
             account.Name = "TRIAL";
-            account.expireDate = DateTime.UtcNow.AddDays(2);
+            account.expireDate = DateTime.Now.AddMinutes(5);
 
             var claims = await _userManager.GetClaimsAsync(user);
             var isTrial = claims.Any(c => c.Type == account.Name);
@@ -431,7 +460,8 @@ namespace chat_server.Controllers
         [Route("game-center")]
         public async Task<IActionResult> GameCenter()
         {
-            var isValid = false;
+            ResponeGameDto responeGameDto = new ResponeGameDto();
+            responeGameDto.isValid = false;
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -439,32 +469,35 @@ namespace chat_server.Controllers
             var admin = claims.Any(c => c.Type == "ADMIN");
             if(admin )
             {
-                isValid = true;
-                return Ok(isValid);
+                responeGameDto.isValid = true;
+                return Ok(responeGameDto);
             }
             var trial = claims.FirstOrDefault(c => c.Type == "TRIAL");            
             
             if(trial != null)
             {
-                var isTrialValid = DateTime.Parse(trial.Value) > DateTime.Now;
+                responeGameDto.exp = DateTime.Parse(trial.Value);
+                var isTrialValid = responeGameDto.exp  > DateTime.Now;
                 if(isTrialValid )
                 {
-                    isValid = true;
-                    return Ok(isValid);
+                    responeGameDto.isValid = true;
+
+                    return Ok(responeGameDto);
                 }
             }
             var pro = claims.FirstOrDefault(c => c.Type == "PRO");
             if (pro != null)
             {
-                var isProValid = DateTime.Parse(pro.Value) > DateTime.Now;
+                responeGameDto.exp = DateTime.Parse(pro.Value);
+                var isProValid = responeGameDto.exp  > DateTime.Now;
                 if(isProValid )
                 {
-                    isValid = true;
-                    return Ok(isValid);
+                    responeGameDto.isValid = true;
+                    return Ok(responeGameDto);
                 }
             }
 
-            return Forbid();
+            return Ok(responeGameDto);
         }
         private async Task<IActionResult> GenerateToken(User user)
         {

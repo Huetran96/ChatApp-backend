@@ -10,6 +10,7 @@
         public string Message { get; set; }
 
         public string Token { get; set; }
+        public DateTime? expGame {  get; set; }
         public DateTime exp {  get; set; }
         public DateTime now { get; set; } = DateTime.UtcNow;
     }
