@@ -1,5 +1,8 @@
 ﻿using chat_server.data;
+using chat_server.Hubs;
 using chat_server.Models;
+using chat_server.Repositories;
+using chat_server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +13,13 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDefaultCors();
+//builder.Services.AddDefaultCors();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IFriendshipRepository, FriendshipRepository>(); // Repository của bạn
+builder.Services.AddScoped<IFriendshipService, FriendshipService>(); // Service của bạn
 
 builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnect")));

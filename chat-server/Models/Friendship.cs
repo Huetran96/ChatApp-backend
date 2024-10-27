@@ -6,6 +6,7 @@ namespace chat_server.Models
     public class Friendship
     {
         [Key]
+        public string FriendShipId { get; set; } = Guid.NewGuid().ToString();
 
         public string RequestedId { get; set; }
         public User RequestedUser { get; set; }

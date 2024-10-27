@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\chat-server.csproj": {}
+    "C:\\Users\\thuan\\Desktop\\Aptech\\ProjectGitFB\\ChatApp-backend\\chat-server\\chat-server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\chat-server.csproj": {
+    "C:\\Users\\thuan\\Desktop\\Aptech\\ProjectGitFB\\ChatApp-backend\\chat-server\\chat-server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\chat-server.csproj",
+        "projectUniqueName": "C:\\Users\\thuan\\Desktop\\Aptech\\ProjectGitFB\\ChatApp-backend\\chat-server\\chat-server.csproj",
         "projectName": "chat-server",
-        "projectPath": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\chat-server.csproj",
-        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\obj\\",
+        "projectPath": "C:\\Users\\thuan\\Desktop\\Aptech\\ProjectGitFB\\ChatApp-backend\\chat-server\\chat-server.csproj",
+        "packagesPath": "C:\\Users\\thuan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\thuan\\Desktop\\Aptech\\ProjectGitFB\\ChatApp-backend\\chat-server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\thuan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -102,7 +102,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
