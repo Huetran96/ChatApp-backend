@@ -1,4 +1,4 @@
-﻿namespace chat_server
+﻿namespace chat_server.Helpers
 {
     public class Pattern
     {
