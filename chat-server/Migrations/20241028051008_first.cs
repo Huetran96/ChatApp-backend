@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace chat_server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDb : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,11 +40,23 @@ namespace chat_server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TokenLogouts",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    expireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenLogouts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Otp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -91,7 +103,8 @@ namespace chat_server.Migrations
                 name: "Friendships",
                 columns: table => new
                 {
-                    RequestedId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RequestedId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RequestedUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     AcceptedId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AppceptedUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -101,7 +114,7 @@ namespace chat_server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Friendships", x => x.RequestedId);
+                    table.PrimaryKey("PK_Friendships", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Friendships_Users_AppceptedUserId",
                         column: x => x.AppceptedUserId,
@@ -148,14 +161,11 @@ namespace chat_server.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Fullname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Dob = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Hobby = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Like = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Dislike = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Sport = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     School = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     College = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -337,6 +347,9 @@ namespace chat_server.Migrations
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "TokenLogouts");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");

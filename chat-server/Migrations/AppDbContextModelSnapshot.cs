@@ -178,7 +178,7 @@ namespace chat_server.Migrations
 
             modelBuilder.Entity("chat_server.Models.Friendship", b =>
                 {
-                    b.Property<string>("FriendShipId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AcceptedId")
@@ -205,7 +205,7 @@ namespace chat_server.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("FriendShipId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AppceptedUserId");
 
@@ -358,7 +358,6 @@ namespace chat_server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")

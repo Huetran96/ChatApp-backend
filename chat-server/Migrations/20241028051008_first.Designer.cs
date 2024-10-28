@@ -12,8 +12,8 @@ using chat_server.data;
 namespace chat_server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241027185500_updatedb")]
-    partial class updatedb
+    [Migration("20241028051008_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -181,7 +181,7 @@ namespace chat_server.Migrations
 
             modelBuilder.Entity("chat_server.Models.Friendship", b =>
                 {
-                    b.Property<string>("RequestedId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AcceptedId")
@@ -194,6 +194,10 @@ namespace chat_server.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("RequestedId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("RequestedUserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -204,7 +208,7 @@ namespace chat_server.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("RequestedId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AppceptedUserId");
 
@@ -357,7 +361,6 @@ namespace chat_server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")

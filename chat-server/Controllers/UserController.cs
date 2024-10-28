@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace chat_server.Controllers
 {
@@ -35,22 +36,20 @@ namespace chat_server.Controllers
             _roleManager = roleManager;
             _signInManager = signInManager;
             _config = config;
-
-            
         }
 
         [HttpPost]
-        [Route("create-admin")]
+        [Route("init-admin")]
         public async Task<IActionResult> CreateAdmin([FromBody] RegisterDto request)
         {
             var admin = new IdentityRole(Role.ADMIN);
             var user = new IdentityRole(Role.USER);
-            
-            if( !await _roleManager.RoleExistsAsync(Role.ADMIN))
+
+            if (!await _roleManager.RoleExistsAsync(Role.ADMIN))
             {
                 await _roleManager.CreateAsync(admin);
             }
-            if ( !await _roleManager.RoleExistsAsync(Role.USER))
+            if (!await _roleManager.RoleExistsAsync(Role.USER))
             {
                 await _roleManager.CreateAsync(user);
             }
@@ -66,7 +65,7 @@ namespace chat_server.Controllers
                 PhoneNumber = request.PhoneNumber,
             };
             var result = await _userManager.CreateAsync(newAdmin, request.Password);
-            if ( ! result.Succeeded)
+            if (!result.Succeeded)
             {
                 return BadRequest("Something error");
             }
@@ -81,17 +80,20 @@ namespace chat_server.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto request)
         {
-
-
+            /*Regex regexEmail = new Regex(Pattern.EMAIL_REGEX);
+            Regex regexPhone = new Regex(Pattern.PHONE_REGEX);
+            if (!(regexEmail.IsMatch(request.Email) && regexPhone.IsMatch(request.PhoneNumber))){
+                return BadRequest("Số điện thoại hoặc Email chưa đúng định dạng, bạn hãy kiểm tra lại.");
+            }*/
             var isEmail = await _userManager.FindByEmailAsync(request.Email);
             var isPhoneNumber = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
             if (isEmail != null)
             {
-                return BadRequest("Email nãy đã được sử dụng, bạn hãy kiểm tra lại");
+                return BadRequest("Email is existed");
             }
             if (isPhoneNumber != null)
             {
-                return BadRequest("Số điện thoại này đã được sử dụng,bạn hãy kiểm tra lại");
+                return BadRequest("Phone number is existed");
             }
             var newUser = new User()
             {
@@ -131,14 +133,8 @@ namespace chat_server.Controllers
                 return BadRequest("Password's not correct. Try again!");
             }
             var token = await GenerateToken(user);
-            /*var res = new
-            {
-                token1 = token.ToString(),
-                username = user.UserName
-            };*/
-            
 
-            return Ok(token); 
+            return Ok(token);
         }
 
         [Authorize]
@@ -148,13 +144,10 @@ namespace chat_server.Controllers
         {
             string token = "";
             string authoriztion = Request.Headers.Authorization;
-            if(authoriztion != null) {
-                if (authoriztion.StartsWith("Bearer "))
-                {
-                    token = authoriztion.Substring(7).Trim();
-                }
+            if (authoriztion.StartsWith("Bearer "))
+            {
+                token = authoriztion.Substring(7).Trim();
             }
-            
             await _signInManager.SignOutAsync();
 
             TokenLogout tokenLogout = new TokenLogout();
@@ -175,7 +168,7 @@ namespace chat_server.Controllers
             DateTime expDate = DateTimeOffset.FromUnixTimeSeconds(exp).DateTime;
             tokenLogout.expireDate = expDate;
 
-             await _context.TokenLogouts.AddAsync(tokenLogout);
+            await _context.TokenLogouts.AddAsync(tokenLogout);
             await _context.SaveChangesAsync();
 
             return Ok(tokenLogout);
@@ -186,10 +179,10 @@ namespace chat_server.Controllers
         [Route("user-list")]
         public async Task<IActionResult> GetAllUser([FromQuery] QueryObject request)
         {
-            
+
             ListUserDto listUserDto = new ListUserDto();
 
-            var allUser = await  _userManager.Users.ToListAsync();
+            var allUser = await _userManager.Users.ToListAsync();
             if (request.Keyword != null)
             {
                 allUser = allUser.Where(u => u.UserName.Contains(request.Keyword) || u.Email.Contains(request.Keyword) || u.PhoneNumber.Contains(request.Keyword)).ToList();
@@ -204,7 +197,7 @@ namespace chat_server.Controllers
             {
                 listUserDto.totalPage = (allUser.ToList().Count / request.PageSize) + 1;
             }
-            if(request.Page > listUserDto.totalPage)
+            if (request.Page > listUserDto.totalPage)
             {
                 request.Page = listUserDto.totalPage;
             }
@@ -214,6 +207,7 @@ namespace chat_server.Controllers
 
             return Ok(listUserDto);
         }
+
         [Authorize]
         [HttpDelete]
         [Route("delete")]
@@ -240,7 +234,7 @@ namespace chat_server.Controllers
         [Route("friend-profile/{id}")]
         public async Task<IActionResult> GetProfile([FromRoute] string id)
         {
-            var profile = await _context.Profiles.FirstOrDefaultAsync(p => (p.UserId ) == id );
+            var profile = await _context.Profiles.FirstOrDefaultAsync(p => (p.UserId) == id);
             if (profile == null)
             {
                 return BadRequest("Không tìm thấy");
@@ -251,7 +245,7 @@ namespace chat_server.Controllers
         [Authorize]
         [HttpPut]
         [Route("my-profile/update")]
-        public async Task<IActionResult> UpdateProp ([FromBody] UpdateDto request)
+        public async Task<IActionResult> UpdateProp([FromBody] UpdateDto request)
         {
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -260,19 +254,19 @@ namespace chat_server.Controllers
             {
                 return BadRequest("không tìm thấy thông tin.");
             }
-         
+
             PropertyInfo[] props = profile.GetType().GetProperties();
             var isProp = props.FirstOrDefault(p => p.Name == request.prop);
             if (isProp == null)
             {
                 return BadRequest("Dữ liệu không hợp lệ, Bạn hãy thử lại.");
             }
-            
+
             foreach (var item in props)
             {
-                if(request.prop == item.Name )
+                if (request.prop == item.Name)
                 {
-                    if(item.Name == "Id" || item.Name == "UserId")
+                    if (item.Name == "Id" || item.Name == "UserId")
                     {
                         return BadRequest("Không được phép sửa dữ liệu này.");
                     }
@@ -285,29 +279,78 @@ namespace chat_server.Controllers
             await _context.SaveChangesAsync();
             return Ok(profile);
         }
+        [Authorize]
+        [HttpGet]
+        [Route("account")]
+        public async Task<IActionResult> GetAccount()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            return Ok(user);
+        }
 
         [Authorize]
         [HttpPut]
         [Route("account/update")]
-        public async Task<IActionResult> UpdateAccount([FromBody] UpdateDto request)
+        public async Task<IActionResult> UpdateAccount([FromBody] UpdateUserDto request)
         {
-            return Ok();
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            var isPassCorrect = await _userManager.CheckPasswordAsync(user, request.password);
+            if (!isPassCorrect)
+            {
+                return BadRequest("Mật khẩu sai");
+            }
+
+            if (request.prop == "Email")
+            {
+                Regex regex = new Regex(Pattern.EMAIL_REGEX);
+                if (!regex.IsMatch(request.value))
+                {
+                    return BadRequest("Email chưa đúng định dạng.");
+                }
+                if (await _userManager.FindByEmailAsync(request.value) != null)
+                {
+                    return BadRequest("Email đã được sử dụng ");
+                }
+                user.Email = request.value;
+                await _userManager.UpdateAsync(user);
+                return Ok(user);
+
+
+            }
+            if (request.prop == "PhoneNumber")
+            {
+                Regex regex = new Regex(Pattern.PHONE_REGEX);
+                if (!regex.IsMatch(request.value))
+                {
+                    return BadRequest("Số điện thoại chưa đúng định dạng.");
+                }
+                var isExist = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.value);
+                if (isExist != null)
+                {
+                    return BadRequest("Số điện thoại đã được sử dụng");
+                }
+                user.PhoneNumber = request.value;
+                await _userManager.UpdateAsync(user);
+                return Ok(user);
+            }
+            return BadRequest("Dữ liệu không hợp lệ, vui lòng kiểm tra lại.");
         }
 
         [HttpGet]
         [Route("verified-token")]
         public async Task<IActionResult> VerifiedToken()
         {
-            string token ="";
-            
+            string token = "";
+
             string authoriztion = Request.Headers.Authorization;
-            if (authoriztion != null) {
-                if (authoriztion.StartsWith("Bearer "))
-                {
-                    token = authoriztion.Substring(7).Trim();
-                }
+           
+            if ( authoriztion != null && authoriztion.StartsWith("Bearer "))
+            {
+                token = authoriztion.Substring(7).Trim();
             }
-         
             TokenReponseDto tokenReponseDto = new TokenReponseDto();
 
             /*var tokenValidateParam = new TokenValidationParameters
@@ -327,7 +370,7 @@ namespace chat_server.Controllers
             }
             var jwtToken = handler.ReadJwtToken(token);
             tokenReponseDto.Id = jwtToken.Claims.FirstOrDefault(c => c.Type == "JWTID").Value;
-            var isTokenLogout = await _context.TokenLogouts.FirstOrDefaultAsync( t => t.Id == tokenReponseDto.Id);
+            var isTokenLogout = await _context.TokenLogouts.FirstOrDefaultAsync(t => t.Id == tokenReponseDto.Id);
             if (isTokenLogout != null)
             {
                 tokenReponseDto.isValid = false;
@@ -335,12 +378,15 @@ namespace chat_server.Controllers
 
                 return BadRequest(tokenReponseDto);
 
-                
+
             }
             tokenReponseDto.Token = token;
             tokenReponseDto.UserId = jwtToken.Claims.FirstOrDefault(e => e.Type == ClaimTypes.NameIdentifier).Value;
             tokenReponseDto.UserName = jwtToken.Claims.FirstOrDefault(u => u.Type == "Sub").Value;
-            tokenReponseDto.Role = jwtToken.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Role).Value;
+            var roles = jwtToken.Claims.Where(r => r.Type == ClaimTypes.Role);
+            tokenReponseDto.Roles = roles.Select(r => r.Value).ToArray();
+
+
             var expClaim = jwtToken.Claims.FirstOrDefault(e => e.Type == "exp");
             if (expClaim == null)
             {
@@ -357,7 +403,7 @@ namespace chat_server.Controllers
 
             }
             tokenReponseDto.Message = "het han";
-            return Ok(tokenReponseDto);            
+            return Ok(tokenReponseDto);
         }
 
         [Authorize]
@@ -370,14 +416,14 @@ namespace chat_server.Controllers
 
             var account = new AccountDto();
             account.Name = "TRIAL";
-            account.expireDate = DateTime.Now.AddMinutes(5);
+            account.expireDate = DateTime.UtcNow.AddDays(2);
 
             var claims = await _userManager.GetClaimsAsync(user);
             var isTrial = claims.Any(c => c.Type == account.Name);
             if (isTrial)
             {
                 return BadRequest("Bạn đã sử dụng bản TRIAL. Hãy nâng cấp tài khoản PRO để sử dụng dịch vụ");
-            }       
+            }
 
             await _userManager.AddClaimAsync(user, new Claim(account.Name, account.expireDate.ToString()));
             var token = GenerateToken(user);
@@ -396,11 +442,11 @@ namespace chat_server.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             var claims = await _userManager.GetClaimsAsync(user);
             var pro = claims.FirstOrDefault(c => c.Type == account.Name);
-            if(pro != null)
+            if (pro != null)
             {
                 await _userManager.RemoveClaimAsync(user, pro);
             }
-            
+
             await _userManager.AddClaimAsync(user, new Claim(account.Name, account.expireDate.ToString()));
             var token = GenerateToken(user);
             return Ok(token.Result);
@@ -412,24 +458,26 @@ namespace chat_server.Controllers
         public async Task<IActionResult> GameCenter()
         {
             ResponeGameDto responeGameDto = new ResponeGameDto();
-            responeGameDto.isValid = false;
+             responeGameDto.isValid = false;
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = await _userManager.FindByIdAsync(userId);
 
-            var claims = await _userManager.GetClaimsAsync(user);
-            var admin = claims.Any(c => c.Type == "ADMIN");
-            if(admin )
+            
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Contains(Role.ADMIN))
             {
                 responeGameDto.isValid = true;
                 return Ok(responeGameDto);
             }
-            var trial = claims.FirstOrDefault(c => c.Type == "TRIAL");            
-            
-            if(trial != null)
+
+            var claims = await _userManager.GetClaimsAsync(user);
+            var trial = claims.FirstOrDefault(c => c.Type == "TRIAL");
+
+            if (trial != null)
             {
-                responeGameDto.exp = DateTime.Parse(trial.Value);
-                var isTrialValid = responeGameDto.exp  > DateTime.Now;
-                if(isTrialValid )
+                var exp = DateTime.Parse(trial.Value);
+                var isTrialValid = exp > DateTime.Now;
+                if (isTrialValid)
                 {
                     responeGameDto.isValid = true;
 
@@ -439,22 +487,22 @@ namespace chat_server.Controllers
             var pro = claims.FirstOrDefault(c => c.Type == "PRO");
             if (pro != null)
             {
-                responeGameDto.exp = DateTime.Parse(pro.Value);
-                var isProValid = responeGameDto.exp  > DateTime.Now;
-                if(isProValid )
+                var exp = DateTime.Parse(pro.Value);
+                var isProValid = exp > DateTime.Now;
+                if (isProValid)
                 {
                     responeGameDto.isValid = true;
                     return Ok(responeGameDto);
                 }
             }
 
-            return Ok(responeGameDto);
+            return Forbid();
         }
-
         private async Task<IActionResult> GenerateToken(User user)
         {
 
             var roles = await _userManager.GetRolesAsync(user);
+            var claimType = await _userManager.GetClaimsAsync(user);
             var claims = new List<Claim>
             {
                 new Claim (ClaimTypes.NameIdentifier, user.Id),
@@ -465,6 +513,14 @@ namespace chat_server.Controllers
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
+            if (claimType != null)
+            {
+                foreach (var claim in claimType)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, claim.Type));
+                }
+            }
+
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
             var tokenObject = new JwtSecurityToken(
@@ -479,7 +535,5 @@ namespace chat_server.Controllers
             return Ok(token);
 
         }
-
-
     }
 }

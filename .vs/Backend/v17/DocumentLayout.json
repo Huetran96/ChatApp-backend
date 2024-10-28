@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\dtos\\tokenreponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\dtos\\tokenreponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|solutionrelative:chat-server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{51700AE9-041F-48E8-9324-4896E865300F}|chat-server\\chat-server.csproj|c:\\users\\asus\\desktop\\project-sem322\\project_sem3\\backend\\chat-server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,39 +42,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Models\\User.cs",
-              "RelativeDocumentMoniker": "chat-server\\Models\\User.cs",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Models\\User.cs",
-              "RelativeToolTip": "chat-server\\Models\\User.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T03:45:46.147Z",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\appsettings.json",
+              "RelativeDocumentMoniker": "chat-server\\appsettings.json",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\appsettings.json",
+              "RelativeToolTip": "chat-server\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-10-28T04:45:39.707Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ChatHub.cs",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Hubs\\ChatHub.cs",
-              "RelativeDocumentMoniker": "chat-server\\Hubs\\ChatHub.cs",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Hubs\\ChatHub.cs",
-              "RelativeToolTip": "chat-server\\Hubs\\ChatHub.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAASAAAA",
+              "Title": "TokenReponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\DTOs\\TokenReponseDto.cs",
+              "RelativeDocumentMoniker": "chat-server\\DTOs\\TokenReponseDto.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\DTOs\\TokenReponseDto.cs",
+              "RelativeToolTip": "chat-server\\DTOs\\TokenReponseDto.cs",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAQwAYAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T03:45:25.91Z",
+              "WhenOpened": "2024-10-28T04:40:19.384Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "chat-server\\Controllers\\UserController.cs",
               "ToolTip": "C:\\Users\\ASUS\\Desktop\\PROJECT-SEM322\\Project_sem3\\Backend\\chat-server\\Controllers\\UserController.cs",
               "RelativeToolTip": "chat-server\\Controllers\\UserController.cs",
-              "ViewState": "AQIAAGcBAAAAAAAAAAAcwHIBAAArAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-28T03:39:43.805Z",
               "EditorCaption": ""
